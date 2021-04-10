@@ -10,8 +10,9 @@ FEATURE_INCLUDE_THE_WORD_AND (Include 'And' for a number preceded by a multiple 
 2. Deals with negative integers
 3. Deals with out of range values
 4. Loop through billions, millions, thousands, and hundreds. Decrement the integer moving from left to right (e.g. 432 -> 32)
-5. Determine the remainder below 100
-6. Returns integer in words
+5. Possibly include the word 'and'. This is dependent on FEATURE_INCLUDE_THE_WORD_AND.
+6. Determine the remainder below 100.
+7. Returns integer in words.
 '''
 
 # import ld client for launchDarkly
@@ -88,13 +89,14 @@ def integerToWords(integer):
                 digits = integer // multiple # The floor of 4321 // 1000 = 4.
                 integer -= digits * multiple # Get rid of the 4000 (e.g. 4321 -> 321)
                 words += integerToWords(digits) + word # 'Four' + ' Thousand ' + 'Three' + ' Hundred ' 
+                # 5. Possibly include the word 'and'
                 if FEATURE_INCLUDE_THE_WORD_AND:
                     # Include 'And' for a number preceded by a multiple of 100.
                     # For instance 321 => 'Three Hundred and Twenty One'
                     if multiple == 100 and integer != 0:
                         words += 'and '
 
-    # 5. Determine the remainder below 100
+    # 6. Determine the remainder below 100
     if integer != 0:
         if integer in IntegerWords:
             # integer is directly in IntegerToWords
@@ -103,7 +105,7 @@ def integerToWords(integer):
             # integer is 21, 32, 98, etc
             words += IntegerWords[10 * (integer // 10)] + ' ' + IntegerWords[integer % 10]
 
-    # 6. Returns integer in words
+    # 7. Returns integer in words
     return words.strip()
 
 #####################################################################################################################################
